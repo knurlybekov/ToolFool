@@ -74,7 +74,7 @@ def get_markers():
         # popup_text += f'Tool: {row["Tool Name"]}<br>'
         # popup_text += f'Start Time: {row["Start time"]}<br>'
         # popup_text += f'End Time: {row["End time"]}'
-        popup_text = """<iframe src="templates/InfoDivTest.html" 
+        popup_text = """<iframe src="/InfoDivTest.html" 
                     width="400" height="600" frameborder="0"></iframe>"""
         popup = folium.Popup(popup_text, max_width=300)
         marker = folium.Marker(location=[row['Latitude'], row['Longitude']], popup=popup,
