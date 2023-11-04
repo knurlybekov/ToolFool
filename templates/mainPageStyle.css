@@ -1,0 +1,71 @@
+#search {
+            width: 70%;
+            margin: auto;
+        }
+
+        #map{
+        position:fixed;
+        width:1200px;
+        height:700px;
+        background-color: grey;
+        top:60px;
+        right:calc(50% - 600px);
+    }
+    /*******************Modal Window Style**********************/
+    #modal{
+        position:relative;
+        width:300px;
+        height:500px;
+        background-color: white;
+        border:1px solid black;
+        border-radius: 15px;
+        top:calc(50% - 250px);
+        text-align: center;
+        display:none;
+    }
+    #filterForm{
+        top:50px;
+        text-align: center;
+    }
+    .form-check-label{
+        margin-right:3px;
+    }
+    #filterButton{
+        position:absolute;
+        bottom:30px;
+    }
+    /*******************Info Div Style**********************/
+        #infoDiv{
+            width:200px;
+            height:500px;
+            border:2px solid black;
+            z-index: 3;
+            border-radius: 30px;
+            position: absolute;
+            right: 50px;
+            top: calc(50% - 250px);
+            transition: width 1s;
+            background-color: white;
+        }
+        #imgDisplay{
+            width:120px;
+            height:120px;
+            position: absolute;
+            top:20px;
+            right: calc(50% - 60px);
+            border-radius: 30px;
+        }
+        #orderForm{
+            position:absolute;
+            top:60px;
+            left:50px;
+            display:none;
+            transition:visibility 1s;
+        }
+        #sellerInfo{
+            display:none;
+            position:absolute;
+            top:60px;
+            right:70px;
+            text-align: center;
+        }
