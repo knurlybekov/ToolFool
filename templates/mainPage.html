@@ -8,38 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <style>
-        #search {
-            width: 70%;
-            margin: auto; 
-        }
-
-        #map{
-        position:fixed;
-        width:1200px;
-        height:700px;
-        background-color: grey;
-        top:60px;
-        right:calc(50% - 600px);
-    }
-    #modal{
-        position:relative;
-        width:300px;
-        height:500px;
-        background-color: white;
-        border:1px solid black;
-        border-radius: 15px;
-        top:calc(50% - 250px);
-        text-align: center;
-    }
-    #filterForm{
-        top:50px;
-        text-align: center;
-    }
-    .form-check-label{
-        margin-right:3px;
-    }
-    </style>
+    <link href="mainPageStyle.css" rel ='stylesheet'>
+    <script src = "mainPageFunctions.js" defer></script>
 </head>
 <body>
     <div class="container-fluid">
@@ -75,6 +45,10 @@
                         </div>
                     </ul>
                 </div>
+
+                <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none " id="filterButton" aria-expanded="false">
+                        <i class="bi bi-funnel-fill" style = "font-size:2.5rem;"></i>
+                    </a>
             </div>
 
             <!-- Right side content -->
@@ -116,40 +90,61 @@
         
                         <!--Holder for brands, dynamically generated based on returned brands-->
                         <div style = "text-align: right; width: fit-content; display: inline-block;" id = "brands"></div>
-        
-                        <button type = "submit" style = "position:absolute; right:15px; bottom:15px;" class = "btn btn-primary">Apply</button>
+                        <button type = "submit" style = "position:absolute; right:15px; bottom:15px;" class = "btn btn-primary" id="applyFilter">Apply</button>
                     </form>
                 </div>
+
+                <div id = "infoDiv">
+            <img id = "imgDisplay"> <!--Piece image, needs to be updated based on selection-->
+
+            <!--Piece info-->
+            <div style = "text-align: center; width: 100%; top: 160px; position: absolute;">
+                <h3>Piece Name</h3>
+                <br>
+                <p id="description">Short description</p>
+            </div>
+
+            <!--Seller info (displayed on show more-->
+            <div id="sellerInfo">
+                <h3 style="margin:0;">Owner Name</h3>
+                <br><br>
+                <p>Owner Info</p>
+            </div>
+
+            <!--Order controls, displayed on show more-->
+            <div id = "orderForm">
+                <form class ="form-group">
+                    <!--Rent from control, value needs to be updated and limited-->
+                    <label for = "startTime">Rent From: </label>
+                    <input type = "datetime-local" class ='form-control' name = "startTime" id="startTime" value="2023-10-31T12:00"><br>
+
+                    <!--Rent to control, value needs to be updated and limited-->
+                    <label for = "endTime">To: </label>
+                    <input type = "datetime-local" class ='form-control' name = "endTime" id="endTime" value="2023-10-31T12:00"><br>
+
+                    <!--Deliver/pickup control-->
+                    <div class = "form-check">
+                        <input type = "radio" name = "deliver" class ="form-check-input" checked>
+                        <label class = "form-check-label" for ="deliver">Deliver</label>
+                    </div>
+                    <div class = "form-check">
+                        <input type = "radio" name = "deliver" class ="form-check-input">
+                        <label class = "form-check-label" for ="deliver">Pickup</label>
+                    </div>
+                    <br><br>
+
+                    <!--Total price display-->
+                    <h4 id="total">Total: $0.00</h4>
+                    <button type = "submit" class ="btn btn-primary">Submit</button>
+                </form>
+            </div>
+
+            <!--Button to expand/collapse info-->
+            <button id="openInfodiv" class = "btn btn-primary" style = "position: absolute; font-size:14px; width:100px; bottom:30px; right:30px;">Show more</button>
+        </div>
             </div>
         </div>
     </div>
 </body>
-    <script>
-        const brandArray = ["Makita", "Dewalt", "Craftsman"]; //Hard coded in brands, need to be updated by controller or AJAX
-        populateBrands(brandArray);
-
-        //Populates brand holder with brands
-        function populateBrands(brandArray) {
-            let brandString = "";
-            //Iterates, adding a label and checkbox for each brand
-            for (let brand in brandArray) {
-                brandString += "<label for = '" + brandArray[brand] + "' class = 'form-check-label'>" + brandArray[brand] + "</label>";
-                brandString += "<input type = 'checkbox' name = '" + brandArray[brand] + "' class = 'form-check-input'><br>";
-            }
-
-            $("#brands").html(brandString);
-        }
-
-        //Event listener for updating price slider
-        $("#priceRange").on('input change', function(){
-            var val = $(this).val();
-            let USD = new Intl.NumberFormat('en-US', {style:'currency', currency:'USD'}); //USD number format
-            $("#priceLabel").text("" + USD.format(val));
-        });
-
-        //Need to do:
-        //Filter choices based on database, not hardcoded (AJAX)
-        //Join into map
-    </script>
 </html>
 
