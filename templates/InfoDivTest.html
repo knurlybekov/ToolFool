@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
+<!--Bootstrap and JQuery dependency-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <style>
-        div{
-            margin:none;
-            padding: none;
-        }
         #infoDiv{
             width:200px;
             height:500px;
@@ -52,25 +49,38 @@
             text-align: center;
         }
     </style>
-    <div id = "map" class =''>
+
+    <div id = "map" class =''> <!--Map container, just used for demonstration-->
+        <!--Start of wigit-->
         <div id = "infoDiv">
-            <img id = "imgDisplay">
+            <img id = "imgDisplay"> <!--Piece image, needs to be updated based on selection-->
+
+            <!--Piece info-->
             <div style = "text-align: center; width: 100%; top: 160px; position: absolute;">
                 <h3>Piece Name</h3>
                 <br>
                 <p id="description">Short description</p>
             </div>
+
+            <!--Seller info (displayed on show more-->
             <div id="sellerInfo">
                 <h3 style="margin:0;">Owner Name</h3>
                 <br><br>
                 <p>Owner Info</p>
             </div>
+
+            <!--Order controls, displayed on show more-->
             <div id = "orderForm">
                 <form class ="form-group">
+                    <!--Rent from control, value needs to be updated and limited-->
                     <label for = "startTime">Rent From: </label>
                     <input type = "datetime-local" class ='form-control' name = "startTime" id="startTime" value="2023-10-31T12:00"><br>
+
+                    <!--Rent to control, value needs to be updated and limited-->
                     <label for = "endTime">To: </label>
                     <input type = "datetime-local" class ='form-control' name = "endTime" id="endTime" value="2023-10-31T12:00"><br>
+
+                    <!--Deliver/pickup control-->
                     <div class = "form-check">
                         <input type = "radio" name = "deliver" class ="form-check-input" checked>
                         <label class = "form-check-label" for ="deliver">Deliver</label>
@@ -80,49 +90,70 @@
                         <label class = "form-check-label" for ="deliver">Pickup</label>
                     </div>
                     <br><br>
+
+                    <!--Total price display-->
                     <h4 id="total">Total: $0.00</h4>
                     <button type = "submit" class ="btn btn-primary">Submit</button>                 
                 </form>
             </div>
+
+            <!--Button to expand/collapse info-->
             <button id="openInfodiv" class = "btn btn-info" style = "position: absolute; width:95px; bottom:30px; right:30px;">Show more</button>
         </div>
+
+        <!--End of wigit-->
     </div>
 
     <script>
-        let CAD = new Intl.NumberFormat('en-US', {syle:'currency', currency:'USD'});
+        let CAD = new Intl.NumberFormat('en-US', {style:'currency', currency:'USD'}); //USD number format
+
+        /****************Event Listeners****************/
+        //Event listener to expand/collapse info
         $("#openInfodiv").click(showInfoDiv);
+
+        //Changes total price on end-time change
+        $("#endTime").change(function(){
+            let totTime = document.getElementById('endTime').valueAsNumber - document.getElementById('startTime').valueAsNumber;
+            totTime /= 1000*60*60;
+            $("#total").text("Total: $" + CAD.format(totTime * 7.32));
+            //Needs update from database
+        });
+
+        //Changes total price on start-time change
+        $("#startTime").change(function(){
+            let totTime = document.getElementById('endTime').valueAsNumber - document.getElementById('startTime').valueAsNumber;
+            totTime /= 1000*60*60;
+            $("#total").text("Total: $" + CAD.format(totTime * 7.32));
+            //Needs update from database
+            //Needs to change min value for end-time so not negative time
+        });
+
+        //Expands infoDiv and displays more info
         function showInfoDiv(){
             $("#infoDiv").css("width", "calc(100% - 90px)");
-
             setTimeout(function(){
                 $("#orderForm").show();
                 $("#sellerInfo").show();
             }, 750);
-            $("#description").text('Long Description');            
+            $("#description").text('Long Description'); //Needs to be updated from database
+
+            //Changes event listener to collapseInfoDiv
             $("#openInfodiv").off();
             $(this).text("Show less");
             $("#openInfodiv").click(collapseInfoDiv);
         }
+
+        //Collapses infoDiv and hides more info
         function collapseInfoDiv(){
             $("#infoDiv").css("width", "200px");
-            $("#description").text('Short Description');
+            $("#description").text('Short Description'); //Needs to be updated from database
             $("#orderForm").hide();
             $("#sellerInfo").hide();
+
+            //Changes event listener to showInfoDiv
             $("#openInfodiv").off();
             $(this).text("Show more");
             $("#openInfodiv").click(showInfoDiv);
         }
-
-        $("#endTime").change(function(){
-            var totTime = document.getElementById('endTime').valueAsNumber - document.getElementById('startTime').valueAsNumber;
-            totTime /= 1000*60*60;
-            $("#total").text("Total: $" + CAD.format(totTime * 7.32));
-            
-        });
-        $("#startTime").change(function(){
-            var totTime = document.getElementById('endTime').valueAsNumber - document.getElementById('startTime').valueAsNumber;
-            totTime /= 1000*60*60;
-            $("#total").text("Total: $" + CAD.format(totTime * 7.32));
-        });
     </script>
 </html>
