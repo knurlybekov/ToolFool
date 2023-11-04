@@ -15,7 +15,7 @@ def create_app():
     socketio = SocketIO(app)
     driver = '{ODBC Driver 18 for SQL Server}'
     server = 'acresproject.database.windows.net'
-    database = 'toolsappdb'
+    database = 'toolfooldb'
     username = 'admin123'
     password = 'Qwerty123'
     app.config['SECRET_KEY'] = 'Qwerty123'
@@ -30,23 +30,23 @@ def create_app():
 
     db.init_app(app)
 
-    login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
-    login_manager.init_app(app)
+    # login_manager = LoginManager()
+    # login_manager.login_view = 'auth.login'
+    # login_manager.init_app(app)
+    #
+    # from models import employees
 
-    from models import employees
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        return employees.query.get(int(user_id))
+    # @login_manager.user_loader
+    # def load_user(user_id):
+    #     return employees.query.get(int(user_id))
 
     from views import views
-    from auth import auth
-    from reports import reports_bp
-    from tables import tables_bp
+    # from auth import auth
+    # from reports import reports_bp
+    # from tables import tables_bp
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
-    app.register_blueprint(reports_bp, url_prefix='/')
-    app.register_blueprint(tables_bp, url_prefix='/')
+    # app.register_blueprint(auth, url_prefix='/')
+    # app.register_blueprint(reports_bp, url_prefix='/')
+    # app.register_blueprint(tables_bp, url_prefix='/')
 
     return app

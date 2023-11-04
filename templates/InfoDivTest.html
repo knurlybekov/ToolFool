@@ -156,4 +156,30 @@
             $("#openInfodiv").click(showInfoDiv);
         }
     </script>
+<script>
+        $(document).ready(function() {
+            $("#getDataBtn").click(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "/get_data",
+                    success: function(response) {
+                        var data = response.data;
+                        $("#dataElement").text(data);
+                    }
+                });
+            });
+        });
+
+        var markerElements = document.querySelectorAll("[name^='marker_']");
+
+// Loop through the markerElements and alert their names
+markerElements.forEach(function(element) {
+    // Get the element's name attribute
+    var markerName = element.getAttribute("name");
+
+    // Display the marker name using alert
+    alert(markerName);
+});
+
+    </script>
 </html>

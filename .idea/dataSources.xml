@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="toolsappdb@acresproject.database.windows.net" uuid="b7fd1cf9-29d4-4bf8-91bb-70ce5e723591">
+    <data-source source="LOCAL" name="toolFooldb" uuid="7be6282e-d63c-44ee-8da5-ad1d09d126e6">
       <driver-ref>azure.ms</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
-      <jdbc-url>jdbc:sqlserver://acresproject.database.windows.net:1433;database=toolsappdb</jdbc-url>
+      <jdbc-url>jdbc:sqlserver://acresproject.database.windows.net:1433;database=toolfooldb;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

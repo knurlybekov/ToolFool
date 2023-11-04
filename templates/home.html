@@ -4,7 +4,52 @@
 {% block scr %}
 {% endblock %}
 {% block content %}
-    <div id="map" style="margin: 3%;">{{ map_html|safe }}</div>
+    <style>
+        {##infoDiv{#}
+        {#    width:200px;#}
+        {#    height:500px;#}
+        {#    border:2px solid black;#}
+        {#    z-index: 3;#}
+        {#    border-radius: 30px;#}
+        {#    position: absolute;#}
+        {#    right: 50px;#}
+        {#    top: calc(50% - 250px);#}
+        {#    transition: width 1s;#}
+        {#    background-color: white;#}
+        {#    display: none;#}
+        #map{
+            width:100%;
+            height:100%;
+            top:75px;
+            right: calc(50% - 550px);
+            background-color: grey;
+            z-index: 44;
+        }
+        #imgDisplay{
+            width:120px;
+            height:120px;
+            position: absolute;
+            top:20px;
+            right: calc(50% - 60px);
+            border-radius: 30px;
+        }
+        #orderForm{
+            position:absolute;
+            top:60px;
+            left:50px;
+            display:none;
+            transition:visibility 1s;
+        }
+        #sellerInfo{
+            display:none;
+            position:absolute;
+            top:60px;
+            right:70px;
+            text-align: center;
+        }
+
+    </style>
+    <div id="map">{{ map_html|safe }}</div>
     <br>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
@@ -39,5 +84,86 @@
 {#setInterval(updateMarkersAndTable, 10000); // Update every 10 seconds#}
 {##}
 {#    </script>#}
+<div id="content_box" style="display: none">
+<div id = "infoDiv">
+            <img id = "imgDisplay">
+            <div style = "text-align: center; width: 100%; top: 160px; position: absolute;">
+                <h3>Piece Name</h3>
+                <br>
+                <p id="description">Short description</p>
+            </div>
+            <div id="sellerInfo">
+                <h3 style="margin:0;">Owner Name</h3>
+                <br><br>
+                <p>Owner Info</p>
+            </div>
+            <div id = "orderForm">
+                <form class ="form-group">
+                    <label for = "startTime">Rent From: </label>
+                    <input type = "datetime-local" class ='form-control' name = "startTime" id="startTime" value="2023-10-31T12:00"><br>
+                    <label for = "endTime">To: </label>
+                    <input type = "datetime-local" class ='form-control' name = "endTime" id="endTime" value="2023-10-31T12:00"><br>
+                    <div class = "form-check">
+                        <input type = "radio" name = "deliver" class ="form-check-input" checked>
+                        <label class = "form-check-label" for ="deliver">Deliver</label>
+                    </div>
+                    <div class = "form-check">
+                        <input type = "radio" name = "deliver" class ="form-check-input">
+                        <label class = "form-check-label" for ="deliver">Pickup</label>
+                    </div>
+                    <br><br>
+                    <h4 id="total">Total: $0.00</h4>
+                    <button type = "submit" class ="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <button id="openInfodiv" class = "btn btn-info" style = "position: absolute; width:95px; bottom:30px; right:30px;">Show more</button>
+        </div>
+</div>
+<script>
+        let CAD = new Intl.NumberFormat('en-US', {syle:'currency', currency:'USD'});
+        $("#openInfodiv").click(showInfoDiv);
+        function showInfoDiv(){
+            $("#infoDiv").css("width", "calc(100% - 90px)");
 
+            setTimeout(function(){
+                $("#orderForm").show();
+                $("#sellerInfo").show();
+            }, 750);
+            $("#description").text('Long Description');
+            $("#openInfodiv").off();
+            $(this).text("Show less");
+            $("#openInfodiv").click(collapseInfoDiv);
+        }
+        function collapseInfoDiv(){
+            $("#infoDiv").css("width", "200px");
+            $("#description").text('Short Description');
+            $("#orderForm").hide();
+            $("#sellerInfo").hide();
+            $("#openInfodiv").off();
+            $(this).text("Show more");
+            $("#openInfodiv").click(showInfoDiv);
+        }
+
+        $("#endTime").change(function(){
+            var totTime = document.getElementById('endTime').valueAsNumber - document.getElementById('startTime').valueAsNumber;
+            totTime /= 1000*60*60;
+            $("#total").text("Total: $" + CAD.format(totTime * 7.32));
+
+        });
+        $("#startTime").change(function(){
+            var totTime = document.getElementById('endTime').valueAsNumber - document.getElementById('startTime').valueAsNumber;
+            totTime /= 1000*60*60;
+            $("#total").text("Total: $" + CAD.format(totTime * 7.32));
+        });
+        $(button).click(function () {
+            $('#infoDiv').css("display", 'block');
+        })
+        
+        marker.on('click', function () {
+            $('#infoDiv').css("display", 'block');
+        })
+        $('#marker-sss').click(function (){
+            $('#infoDiv').css("display", 'block');
+        })
+    </script>
 {% endblock %}
