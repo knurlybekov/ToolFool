@@ -177,3 +177,29 @@ def getTools():
 #     sql_query = "select * from employees"
 #     df = pd.read_sql_query(sql_query, conn)
 #     return df
+
+
+#Added by Ethan, needs to be reviewed by Karen
+
+# def addUser(fname, lname, email, pword):
+#     if(checkUser(email)):
+#         conn = connection()
+#         cursor = conn.cursor()
+#         sqlQuery = "INSERT INTO accounts (fname, lname, email, pword) VALUES('" + fname + "','" + lname + "','" + email + "','" + pword + "')"
+#         cursor.execute(sqlQuery)
+#         return True
+#     else:
+#         return False
+    
+
+# def checkUser(email):
+#     conn = connection()
+#     cursor = conn.cursor()
+#     sqlQuery = "SELECT email FROM accounts WHERE email LIKE '" + email + "'"
+
+#     cursor.execute(sqlQuery)
+
+#     if(cursor.fetchone()):
+#         return False
+#     else:
+#         return True
