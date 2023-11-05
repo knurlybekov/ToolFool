@@ -104,3 +104,15 @@ jobs:
           allow-no-subscriptions: # optional
     # Provide audience field for access-token. Default value is api://AzureADTokenExchange
           audience: # optional, default is api://AzureADTokenExchange
+
+
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+    
+        - uses: azure/login@v1
+        with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+         - run: |
+        az webapp list --query "[?state=='Running']"
