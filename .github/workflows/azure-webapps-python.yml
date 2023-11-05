@@ -75,4 +75,4 @@ jobs:
         with:
           app-name: 'ToolFool'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_55D5574B68BB4321916D9B3F376A4873 }}
