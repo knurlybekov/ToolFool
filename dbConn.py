@@ -99,7 +99,7 @@ def getUser(e_login):
         print(e_login_result, e_password_result,  e_id_result)
         return e_login_result, e_password_result, e_id_result
     else:
-        return None, None, None, None, None, None
+        return None, None, None
 
 
 def getToolsOnSides(side):

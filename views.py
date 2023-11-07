@@ -1,15 +1,15 @@
 # import json
 from datetime import datetime
 
+from flask_login import login_required
 from folium import ClickForMarker
 
-from __init__ import db
+# from __init__ import db
 from flask import Blueprint, render_template, request, flash, jsonify, session, send_file, url_for
 import folium
 from dbConn import connection, getTools
 # from models import employees
 # from apscheduler.schedulers.background import BackgroundScheduler
-
 # scheduler = BackgroundScheduler()
 
 views = Blueprint('views', __name__)
@@ -19,6 +19,7 @@ views = Blueprint('views', __name__)
 
 
 @views.route('/', methods=['GET', 'POST'])
+@login_required
 def home():
     current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     map_obj = map_create()

@@ -1,7 +1,7 @@
 # from flask_login import UserMixin
 # from __init__ import db
-#
-#
+
+
 # class employees(UserMixin, db.Model):
 #     __tablename__ = 'accounts'
 #     account_id = db.Column(db.NUMERIC, primary_key=True)

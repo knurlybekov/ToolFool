@@ -1,13 +1,13 @@
 from urllib import parse
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-# from flask_login import LoginManager
+from flask_login import LoginManager
 # from flask_socketio import SocketIO
 
 
 # init SQLAlchemy so we can use it later in our models
 
-db = SQLAlchemy()
+# db = SQLAlchemy()
 
 
 def create_app():
@@ -28,24 +28,40 @@ def create_app():
     app.config['BOOTSTRAP_QUERYSTRING_REVVING'] = False
     app.config['BOOTSTRAP_QUERYSTRING_REFRESHING'] = False
 
-    db.init_app(app)
+    # db.init_app(app)
+    db = SQLAlchemy(app)
 
-    # login_manager = LoginManager()
-    # login_manager.login_view = 'auth.login'
-    # login_manager.init_app(app)
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
     #
+
+    from flask_login import UserMixin
+
+    class employee(UserMixin, db.Model):
+        __tablename__ = 'accounts'
+
+        account_id = db.Column(db.Integer, primary_key=True)
+        account_createddate = db.Column(db.DateTime, nullable=False)
+        account_login = db.Column(db.String(50), nullable=False)
+        account_password = db.Column(db.String(60), nullable=False)
+        account_user_id = db.Column(db.Integer, nullable=False)
+        accouint_lat = db.Column(db.Float, nullable=False)
+        accouint_lon = db.Column(db.Float, nullable=False)
+
+
     # from models import employees
 
-    # @login_manager.user_loader
-    # def load_user(user_id):
-    #     return employees.query.get(int(user_id))
+    @login_manager.user_loader
+    def load_user(id):
+        return employee.query.get(int(id))
 
     from views import views
-    # from auth import auth
+    from auth import auth
     # from reports import reports_bp
     # from tables import tables_bp
     app.register_blueprint(views, url_prefix='/')
-    # app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')
     # app.register_blueprint(reports_bp, url_prefix='/')
     # app.register_blueprint(tables_bp, url_prefix='/')
 
