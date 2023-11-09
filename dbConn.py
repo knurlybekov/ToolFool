@@ -181,25 +181,25 @@ def getTools():
 
 #Added by Ethan, needs to be reviewed by Karen
 
-# def addUser(fname, lname, email, pword):
-#     if(checkUser(email)):
-#         conn = connection()
-#         cursor = conn.cursor()
-#         sqlQuery = "INSERT INTO accounts (fname, lname, email, pword) VALUES('" + fname + "','" + lname + "','" + email + "','" + pword + "')"
-#         cursor.execute(sqlQuery)
-#         return True
-#     else:
-#         return False
+def addUser(fname, lname, login, pword, lat, long):
+    if(checkUser(login)):
+        conn = connection()
+        cursor = conn.cursor()
+        sqlQuery = "insert into users values(" + "1900-01-01" + ",'" + login  + "', '" + pword + "', '" + lat + "', '" + long + "', '" + fname + "', '" + lname + "', null, null, null, null)"
+        cursor.execute(sqlQuery)
+        return True
+    else:
+        return False
     
 
-# def checkUser(email):
-#     conn = connection()
-#     cursor = conn.cursor()
-#     sqlQuery = "SELECT email FROM accounts WHERE email LIKE '" + email + "'"
+def checkUser(login):
+    conn = connection()
+    cursor = conn.cursor()
+    sqlQuery = "SELECT account_login FROM users WHERE account_login LIKE '" + login + "'"
 
-#     cursor.execute(sqlQuery)
+    cursor.execute(sqlQuery)
 
-#     if(cursor.fetchone()):
-#         return False
-#     else:
-#         return True
+    if(cursor.fetchone()):
+        return False
+    else:
+        return True

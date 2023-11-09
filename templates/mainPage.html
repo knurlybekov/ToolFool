@@ -17,7 +17,6 @@
             <!-- Left sidebar -->
             <div class="col-sm-auto bg-light sticky-top" style="background-color: transparent;">
                 <!-- Your left sidebar content here... -->
-                
                 <!-- Profile dropdown -->
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,96 +52,99 @@
 
             <!-- Right side content -->
             <div class="col-sm p-3 min-vh-100">
+
                 <!-- search section at the top -->
-                <div class="sticky-top mb-3">
-                    <form class="navbar-form" role="search">
-                        <div class="input-group add-on">
-                            <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit"><i class="bi bi-search"></i></button>
+                    <div class="sticky-top mb-3">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group add-on">
+                                <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit"><i class="bi bi-search"></i></button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
                 <!-- Rest of your right-side content here... -->
-                <div id="modal" class="container">
-                    <br><br>
-                    <form class = "form" id = "filterForm"> <!--Needs action, either to controller or AJAX-->
-        
-                        <!--Slider for price-->
-                        <label for="price" id = "priceLabel">>$1,000.00</label>
-                        <input type ="range" id="priceRange" min="1" max ="1000" value = "1000" name ="price">
+                    <div id="modal" class="container">
                         <br><br>
-        
-                        <!--Selection for distance-->
-                        <select name="distance">
-                            <option value="10">10km</option>
-                            <option value="15">15km</option>
-                            <option value="20">20km</option>
-                            <option value="25">25km</option>
-                        </select>
-                        <br><br>
-        
-                        <!--Verification checkbox-->
-                        <label for ="verified" class = "form-check-label">Only Show Verified Vendors</label>
-                        <input type ="checkbox" name = "verified" class = "form-check-input">
-                        <br><br>
-        
-                        <!--Holder for brands, dynamically generated based on returned brands-->
-                        <div style = "text-align: right; width: fit-content; display: inline-block;" id = "brands"></div>
-                        <button type = "submit" style = "position:absolute; right:15px; bottom:15px;" class = "btn btn-primary" id="applyFilter">Apply</button>
-                    </form>
+                        <form class = "form" id = "filterForm"> <!--Needs action, either to controller or AJAX-->
+
+                            <!--Slider for price-->
+                            <label for="price" id = "priceLabel">>$1,000.00</label>
+                            <input type ="range" id="priceRange" min="1" max ="1000" value = "1000" name ="price">
+                            <br><br>
+
+                            <!--Selection for distance-->
+                            <select name="distance">
+                                <option value="10">10km</option>
+                                <option value="15">15km</option>
+                                <option value="20">20km</option>
+                                <option value="25">25km</option>
+                            </select>
+                            <br><br>
+
+                            <!--Verification checkbox-->
+                            <label for ="verified" class = "form-check-label">Only Show Verified Vendors</label>
+                            <input type ="checkbox" name = "verified" class = "form-check-input">
+                            <br><br>
+
+                            <!--Holder for brands, dynamically generated based on returned brands-->
+                            <div style = "text-align: right; width: fit-content; display: inline-block;" id = "brands"></div>
+                            <button type = "submit" style = "position:absolute; right:15px; bottom:15px;" class = "btn btn-primary" id="applyFilter">Apply</button>
+                        </form>
+                    </div>
+
+                    <div id = "infoDiv">
+                        <img id = "imgDisplay"> <!--Piece image, needs to be updated based on selection-->
+
+                        <!--Piece info-->
+                        <div style = "text-align: center; width: 100%; top: 160px; position: absolute;">
+                            <h3>Piece Name</h3>
+                            <br>
+                            <p id="description">Short description</p>
+                        </div>
+
+                        <!--Seller info (displayed on show more-->
+                        <div id="sellerInfo">
+                            <h3 style="margin:0;">Owner Name</h3>
+                            <br><br>
+                            <p>Owner Info</p>
+                        </div>
+
+                        <!--Order controls, displayed on show more-->
+                        <div id = "orderForm">
+                            <form class ="form-group">
+                                <!--Rent from control, value needs to be updated and limited-->
+                                <label for = "startTime">Rent From: </label>
+                                <input type = "datetime-local" class ='form-control' name = "startTime" id="startTime" value="2023-10-31T12:00"><br>
+
+                                <!--Rent to control, value needs to be updated and limited-->
+                                <label for = "endTime">To: </label>
+                                <input type = "datetime-local" class ='form-control' name = "endTime" id="endTime" value="2023-10-31T12:00"><br>
+
+                                <!--Deliver/pickup control-->
+                                <div class = "form-check">
+                                    <input type = "radio" name = "deliver" class ="form-check-input" checked>
+                                    <label class = "form-check-label" for ="deliver">Deliver</label>
+                                </div>
+                                <div class = "form-check">
+                                    <input type = "radio" name = "deliver" class ="form-check-input">
+                                    <label class = "form-check-label" for ="deliver">Pickup</label>
+                                </div>
+                                <br><br>
+
+                                <!--Total price display-->
+                                <h4 id="total">Total: $0.00</h4>
+                                <button type = "submit" class ="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+
+                    <!--Button to expand/collapse info-->
+                    <button id="openInfodiv" class = "btn btn-primary" style = "position: absolute; font-size:14px; width:100px; bottom:30px; right:30px;">Show more</button>
                 </div>
 
-                <div id = "infoDiv">
-            <img id = "imgDisplay"> <!--Piece image, needs to be updated based on selection-->
-
-            <!--Piece info-->
-            <div style = "text-align: center; width: 100%; top: 160px; position: absolute;">
-                <h3>Piece Name</h3>
-                <br>
-                <p id="description">Short description</p>
             </div>
-
-            <!--Seller info (displayed on show more-->
-            <div id="sellerInfo">
-                <h3 style="margin:0;">Owner Name</h3>
-                <br><br>
-                <p>Owner Info</p>
-            </div>
-
-            <!--Order controls, displayed on show more-->
-            <div id = "orderForm">
-                <form class ="form-group">
-                    <!--Rent from control, value needs to be updated and limited-->
-                    <label for = "startTime">Rent From: </label>
-                    <input type = "datetime-local" class ='form-control' name = "startTime" id="startTime" value="2023-10-31T12:00"><br>
-
-                    <!--Rent to control, value needs to be updated and limited-->
-                    <label for = "endTime">To: </label>
-                    <input type = "datetime-local" class ='form-control' name = "endTime" id="endTime" value="2023-10-31T12:00"><br>
-
-                    <!--Deliver/pickup control-->
-                    <div class = "form-check">
-                        <input type = "radio" name = "deliver" class ="form-check-input" checked>
-                        <label class = "form-check-label" for ="deliver">Deliver</label>
-                    </div>
-                    <div class = "form-check">
-                        <input type = "radio" name = "deliver" class ="form-check-input">
-                        <label class = "form-check-label" for ="deliver">Pickup</label>
-                    </div>
-                    <br><br>
-
-                    <!--Total price display-->
-                    <h4 id="total">Total: $0.00</h4>
-                    <button type = "submit" class ="btn btn-primary">Submit</button>
-                </form>
-            </div>
-
-            <!--Button to expand/collapse info-->
-            <button id="openInfodiv" class = "btn btn-primary" style = "position: absolute; font-size:14px; width:100px; bottom:30px; right:30px;">Show more</button>
         </div>
-            </div>
         </div>
     </div>
 </body>
