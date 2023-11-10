@@ -19,6 +19,8 @@ def signup():
         lname = request.form['lname']
         lat = randrange(505100, 553300, 1) / 1000
         long = randrange(1201000, 1204000, 1) / 1000
+        lat = str(lat)
+        long = str(long)
         if(addUser(fname, lname, username, password, lat, long)):
             return redirect("/login")
         else:

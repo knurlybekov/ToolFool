@@ -124,6 +124,17 @@ def getTools():
     return df
 
 
+def findTools(tool_name):
+    conn = connection()
+    cursor = conn.cursor()
+    params = tool_name
+    # sql_query = "select accouint_lat, accouint_lon, account_id from accounts"
+    sql_query = "SELECT u.user_id, u.account_createddate, u.account_login, u.account_password, u.accouint_lat, u.accouint_lon, u.user_fname, u.user_lname, u.user_birthdate, u.user_tools, u.user_orders, t.tool_id, t.tool_name, t.tool_picture, t.t_status, t.tool_description FROM users u JOIN tools t ON u.user_id = t.tools_user_id WHERE tool_name LIKE ?;"
+    cursor.execute(sql_query, params)
+    rows = cursor.fetchall()
+    df = pd.read_sql(sql_query, conn)
+    return df
+
 # def getWorksOnSides(side):
 #     conn = connection()
 #     cursor = conn.cursor()
@@ -188,6 +199,7 @@ def addUser(fname, lname, login, pword, lat, long):
         cursor = conn.cursor()
         sqlQuery = "insert into users values(" + "1900-01-01" + ",'" + login  + "', '" + pword + "', '" + lat + "', '" + long + "', '" + fname + "', '" + lname + "', null, null, null, null)"
         cursor.execute(sqlQuery)
+        conn.commit()
         return True
     else:
         return False
