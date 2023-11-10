@@ -163,7 +163,7 @@ def get_markers():
 
                 <!--Order controls, displayed on show more-->
                 <div id = "orderForm">
-                    <form class ="form-group">
+                    <form class ="form-group" method='post'>
                         <!--Rent from control, value needs to be updated and limited-->
                         <label for = "startTime">Rent From: </label>
                         <input type = "datetime-local" class ='form-control' name = "startTime" id="startTime" value="2023-10-31T12:00"><br>
