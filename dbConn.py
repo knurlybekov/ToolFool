@@ -141,6 +141,60 @@ def findTools(tool_name):
     cursor.close()
     return df
 
+
+def getOrders(u_id):
+    # u_id = str(u_id)
+    conn = connection()
+    cursor = conn.cursor()
+    sql_query = "SELECT o.order_user_id, o.order_id, o.order_starttime, o.order_endtime, t.tool_name, t.tool_description FROM orders as o JOIN tools as t ON t.tools_user_id = o.order_user_id WHERE o.order_user_id = ?"
+    params = (u_id,)
+    cursor.execute(sql_query, params)
+    rows = cursor.fetchall()
+
+    # Transform rows into a list of dictionaries
+    result_data = []
+    for row in rows:
+        result_data.append({
+            'ID of User Renter': row[0],
+            'Order ID': row[1],
+            'Order Start Time': row[2],
+            'Order End Time': row[3],
+            'Tool Name': row[4],
+            'Tool Description': row[5],
+        })
+
+    # Create the DataFrame from the list of dictionaries
+    df = pd.DataFrame(result_data)
+
+    cursor.close()
+    return df
+
+def getToolsA(u_id):
+    conn = connection()
+    cursor = conn.cursor()
+    sql_query = "SELECT * from tools where tools_user_id = ?"
+    params = (u_id,)
+    cursor.execute(sql_query, params)
+    rows = cursor.fetchall()
+
+    # Transform rows into a list of dictionaries
+    result_data = []
+    for row in rows:
+        result_data.append({
+            'Tool ID': row[0],
+            'Tool Name': row[1],
+            'Tool Picture': row[2],
+            'Tool Status': row[3],
+            'Tool Description': row[4],
+            'Owners User ID': row[5],
+            'Tool Price': row[6]
+        })
+
+    # Create the DataFrame from the list of dictionaries
+    df = pd.DataFrame(result_data)
+
+    cursor.close()
+    return df
 # def getWorksOnSides(side):
 #     conn = connection()
 #     cursor = conn.cursor()
@@ -239,35 +293,8 @@ def addTool(name, desc, ui, price):
     conn = connection()
     ui = str(ui)
     cursor = conn.cursor()
-    sqlQuery = "insert into tools values(null,'" + name + "', null, '" + "available" + "', '" + desc + "', '" + ui + "', '" + price + "')"
+    sqlQuery = "insert into tools values('" + name + "', null, '" + "available" + "', '" + desc + "', '" + ui + "', '" + price + "')"
     cursor.execute(sqlQuery)
     conn.commit()
     cursor.close()
     return True
-
-def getOrders(u_id):
-    # u_id = str(u_id)
-    conn = connection()
-    cursor = conn.cursor()
-    sql_query = "SELECT o.order_user_id, o.order_id, o.order_starttime, o.order_endtime, t.tool_name, t.tool_description FROM orders as o JOIN tools as t ON t.tools_user_id = o.order_user_id WHERE o.order_user_id = ?"
-    params = u_id
-    cursor.execute(sql_query, params)
-    # cursor.execute(sql_query)
-    # rows = cursor.fetchall()
-    df = pd.read_sql_query(sql_query, conn, params=params)
-    cursor.close()
-    print(df)
-    return df
-
-def getToolsA(u_id):
-    # u_id = str(u_id)
-    conn = connection()
-    cursor = conn.cursor()
-    sql_query = "SELECT * from tools where tools_user_id = ?"
-    params = u_id
-    cursor.execute(sql_query,params)
-    # rows = cursor.fetchall()
-    df = pd.read_sql_query(sql_query, conn, params=params)
-    cursor.close()
-    print(df)
-    return df

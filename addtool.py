@@ -15,11 +15,11 @@ def addtool():
     current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     error = None
     if request.method == 'POST':
-        toolname = request.args['toolName']
-        desc = request.args['toolDescription']
+        toolname = request.form['toolName']
+        desc = request.form['toolDescription']
         ui = re.findall(r'\d+', str(flask_login.current_user))
         ui = int(ui[0])
-        price = request.args['price']
+        price = request.form['toolPrice']
         if addTool(toolname, desc, ui, price):
             return redirect("/")
         else:

@@ -51,6 +51,7 @@ def get_table(page=1, per_page=10):
 
 
 def getDF(selected_menu_item):
+    selected_menu_item = form_submit()
     if selected_menu_item == 'Tools':
         numbers = re.findall(r'\d+', str(flask_login.current_user))
         print(int(numbers[0]))
@@ -66,12 +67,12 @@ def getDF(selected_menu_item):
 def form_submit():
     if request.method == 'POST':
         selected_menu_item = request.form.get('menu')
-
+        return selected_menu_item
     elif request.method == 'GET':
         selected_menu_item = request.args.get('menu')
-
+        return selected_menu_item
     else:
-        selected_menu_item = None
+        return None
 
 
 
