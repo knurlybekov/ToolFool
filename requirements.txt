@@ -22,7 +22,7 @@ python-socketio>=5.8.0
 pandas>=1.5.3
 pyodbc>=4.0.35
 numpy>=1.24.2
-flask_paginate>=0.5.0
+flask-paginate>=2023.10.24
 # cachelib==0.1  # Only need this if you are running Python 2
 # Note: This sample does NOT directly depend on cachelib.
 # It is an indirect dependency of flask-session.
