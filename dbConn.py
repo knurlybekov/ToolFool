@@ -216,3 +216,12 @@ def checkUser(login):
         return False
     else:
         return True
+
+def addTool(name, desc, ui, price):
+    conn = connection()
+    cursor = conn.cursor()
+    sqlQuery = "insert into tools values(" + "null" + ",'" + name + "', '" + "null" + "', '" + "available" + "', '" + desc + "', '" + ui + "', '" + price + "')"
+    cursor.execute(sqlQuery)
+    conn.commit()
+    return True
+

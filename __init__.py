@@ -64,11 +64,13 @@ def create_app():
     from views import views
     from auth import auth
     from signup import signupBlueprint
+    from addatool import toolprint
     # from reports import reports_bp
     # from tables import tables_bp
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(signupBlueprint, url_prefix='/')
+    app.register_blueprint(toolprint, url_prefix='/')
     # app.register_blueprint(reports_bp, url_prefix='/')
     # app.register_blueprint(tables_bp, url_prefix='/')
 
