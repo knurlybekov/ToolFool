@@ -85,10 +85,13 @@
             right:70px;
             text-align: center;
         }
+        iframe{
+            z-index: -1;
+        }
 </style>
 </head>
 <body>
-<div class="container-fluid">
+<div class="container-fluid" style="z-index: 2000">
         <div class="row">
             <!-- Left sidebar -->
             <div class="col-sm-auto bg-light sticky-top" style="background-color: transparent;">
@@ -104,7 +107,7 @@
                        <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
 
     <!-- Icons in the dropdown -->
-    <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
+    <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center" >
         <li class="nav-item">
             <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
                 <i class="bi-house fs-1"></i>
@@ -145,6 +148,8 @@
                             </form>
                         </div>
                     </form>
+                <br>
+                    {% block map_content %}{% endblock %}
                 </div>
                 <!-- Rest of your right-side content here... -->
                 <div id="modal" class="container" style="z-index: 100">

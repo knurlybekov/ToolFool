@@ -1,20 +1,11 @@
-# import json
 import re
 from datetime import datetime
-
 import flask_login
 import jinja2
 from flask_login import login_required
-from folium import ClickForMarker
-
-# from __init__ import db
-from flask import Blueprint, render_template, request, flash, jsonify, session, send_file, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, session, send_file, url_for, redirect
 import folium
-from dbConn import connection, getTools, findTools
-
-# from models import employees
-# from apscheduler.schedulers.background import BackgroundScheduler
-# scheduler = BackgroundScheduler()
+from dbConn import connection, getTools, findTools, sendOrder
 
 views = Blueprint('views', __name__)
 
@@ -51,32 +42,22 @@ def map_create():
         # print(marker.find_identifier())
         marker.add_to(map)
 
-    click_to_markers = ClickForMarker().add_to(map)
-    # for i, row in df.iterrows():
-    #     popup_text = f'Employee: {row["Employee First Name"]} {row["Employee Last Name"]}<br>'
-    #     popup_text += f'Tool: {row["Tool Name"]}<br>'
-    #     popup_text += f'Start Time: {row["Start time"]}<br>'
-    #     popup_text += f'End Time: {row["End time"]}'
-    #     popup = folium.Popup(popup_text, max_width=300)
-    #     folium.Marker(location=[row['Latitude'], row['Longitude']], popup=popup,
-    #                   icon=folium.Icon(color='#' + row['Color'], icon_color='#' + row['Color'])).add_to(map)
-
-    # for i, row in dfAreas.iterrows():
-    #     Latitude = row["Latitude"].split(',')
-    #     Longitude = row["Longitude"].split(',')
-    #     coordinates = []
-    #     for lat, lon in zip(Latitude, Longitude):
-    #         coordinates.append([float(lat), float(lon)])
-    #     folium.PolyLine(coordinates, color='#' + row['Color'], weight=2.5, opacity=1).add_to(map)
-    #     folium.Polygon(coordinates, color='#' + row['Color'], fill=True, fill_color='#' + row['Color'],
-    #                    fill_opacity=0.2).add_to(map)
-
     map.get_root().width = "100%"
     map.get_root().height = "800px"
 
     return map
 
-
+@views.route('sendorder', methods=['post'])
+def sendorder():
+    if request.method == 'POST':
+        print('a')
+        numbers = re.findall(r'\d+', str(flask_login.current_user))
+        uid = int(numbers[0])
+        startTime = request.form.get('startTime')
+        endTime = request.form.get('endTime')
+        tool_id = request.form.get('tool_id')
+        sendOrder(str(startTime), str(endTime), str(tool_id), str(uid))
+        return redirect(url_for('/', tool_id=tool_id))
 def get_markers():
     params = request.args.get('srch-term')
 
@@ -92,6 +73,7 @@ def get_markers():
         df = getTools()
     print(df)
     markers = []
+    sendorder = url_for('views.sendorder')
     html_popup_template = """
                 <html>
     <!DOCTYPE html>
@@ -163,30 +145,33 @@ def get_markers():
 
                 <!--Order controls, displayed on show more-->
                 <div id = "orderForm">
-                    <form class ="form-group" method='post'>
-                        <!--Rent from control, value needs to be updated and limited-->
-                        <label for = "startTime">Rent From: </label>
-                        <input type = "datetime-local" class ='form-control' name = "startTime" id="startTime" value="2023-10-31T12:00"><br>
+                    <form class="form-group" method="post" action="{{'sendorder'}}">
+    <input type="hidden" id="tool_id" name="tool_id" value="{{ row['tool_id'] }}">
 
-                        <!--Rent to control, value needs to be updated and limited-->
-                        <label for = "endTime">To: </label>
-                        <input type = "datetime-local" class ='form-control' name = "endTime" id="endTime" value="2023-10-31T12:00"><br>
+    <!-- Rent from control, value needs to be updated and limited -->
+    <label for="startTime">Rent From:</label>
+    <input type="datetime-local" class="form-control" name="startTime" id="startTime" value="2023-10-31T12:00"><br>
 
-                        <!--Deliver/pickup control-->
-                        <div class = "form-check">
-                            <input type = "radio" name = "deliver" class ="form-check-input" checked>
-                            <label class = "form-check-label" for ="deliver">Deliver</label>
-                        </div>   
-                        <div class = "form-check">
-                            <input type = "radio" name = "deliver" class ="form-check-input">
-                            <label class = "form-check-label" for ="deliver">Pickup</label>
-                        </div>
-                        <br><br>
+    <!-- Rent to control, value needs to be updated and limited -->
+    <label for="endTime">To:</label>
+    <input type="datetime-local" class="form-control" name="endTime" id="endTime" value="2023-10-31T12:00"><br>
 
-                        <!--Total price display-->
-                        <h4 id="total">Total: $0.00</h4>
-                        <button type = "submit" class ="btn btn-primary">Submit</button>                 
-                    </form>
+    <!-- Deliver/pickup control -->
+    <div class="form-check">
+        <input type="radio" name="deliver" class="form-check-input" id="deliver_deliver" checked>
+        <label class="form-check-label" for="deliver_deliver">Deliver</label>
+    </div>
+    <div class="form-check">
+        <input type="radio" name="deliver" class="form-check-input" id="deliver_pickup">
+        <label class="form-check-label" for="deliver_pickup">Pickup</label>
+    </div>
+    <br><br>
+
+    <!-- Total price display -->
+    <h4 id="total">Total: $0.00</h4>
+    <input type="submit" class="btn btn-primary" name="submit_button">
+</form>
+
                 </div>
 
                 <!--Button to expand/collapse info-->
@@ -207,7 +192,7 @@ def get_markers():
             $("#endTime").change(function(){
                 let totTime = document.getElementById('endTime').valueAsNumber - document.getElementById('startTime').valueAsNumber;
                 totTime /= 1000*60*60;
-                $("#total").text("Total: $" + CAD.format(totTime * 7.32));
+                $("#total").text("Total: " + CAD.format(totTime * 7.32));
                 //Needs update from database
             });
 
@@ -215,7 +200,7 @@ def get_markers():
             $("#startTime").change(function(){
                 let totTime = document.getElementById('endTime').valueAsNumber - document.getElementById('startTime').valueAsNumber;
                 totTime /= 1000*60*60;
-                $("#total").text("Total: $" + CAD.format(totTime * 7.32));
+                $("#total").text("Total: " + CAD.format(totTime * 7.32));
                 //Needs update from database
                 //Needs to change min value for end-time so not negative time
             });
@@ -279,33 +264,9 @@ def get_markers():
         
     </html>"""
     for i, row in df.iterrows():
-        # popup_text = f'Employee: {row["Employee First Name"]} {row["Employee Last Name"]}<br>'
-        # popup_text += f'Tool: {row["Tool Name"]}<br>'
-        # popup_text += f'Start Time: {row["Start time"]}<br>'
-        # popup_text += f'End Time: {row["End time"]}'
-        popup_text = '<iframe src="templates/InfoDivTest.html" frameborder="0"></iframe>'
-        html_popup = jinja2.Template(html_popup_template).render(row=row)
-
+        html_popup = jinja2.Template(html_popup_template).render(row=row, sendorder=sendorder)
         iframe = folium.IFrame(html=html_popup, width=800, height=500)
         popup = folium.Popup(iframe, max_width=2650)
-
-        # jswin = """
-        #     <script>
-        #     alert('sss');
-        # document.getElementById('content_box').style.display = 'block';
-        # </script>
-        # """
-        # iframe = folium.IFrame(html=html_popup, width=800, height=500)
-        # popup = folium.Popup(iframe, max_width=2650)
-        # marker = folium.Marker(location=[row['accouint_lat'], row['accouint_lon']], popup=popup,
-        #                        icon=folium.Icon(color='#' + row['Color'], icon_color='#' + row['Color']), elemet_id="marker_sss")
         marker = folium.Marker(location=[row['accouint_lat'], row['accouint_lon']], popup=popup, elemet_id="marker_sss")
         markers.append(marker)
     return markers
-
-
-
-# scheduler.add_job(get_markers, 'interval', seconds=10)
-#
-# # start the scheduler
-# scheduler.start()

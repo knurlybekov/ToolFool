@@ -218,6 +218,14 @@ def checkUser(login):
     else:
         return True
 
+
+def sendOrder(startTime, endTime, t_id, u_id):
+    conn = connection()
+    cursor = conn.cursor()
+    sqlQuery = "INSERT INTO orders VALUES ('" + startTime + "', '" + endTime + "', '" + t_id + "', '" + u_id + "', null)"
+    cursor.execute(sqlQuery)
+    conn.commit()
+
 def addTool(name, desc, ui, price):
     conn = connection()
     cursor = conn.cursor()
