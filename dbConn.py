@@ -125,12 +125,13 @@ def getTools():
 
 
 def findTools(tool_name):
+    tool_name = str(tool_name)
     conn = connection()
     cursor = conn.cursor()
-    params = tool_name
     # sql_query = "select accouint_lat, accouint_lon, account_id from accounts"
-    sql_query = "SELECT u.user_id, u.account_createddate, u.account_login, u.account_password, u.accouint_lat, u.accouint_lon, u.user_fname, u.user_lname, u.user_birthdate, u.user_tools, u.user_orders, t.tool_id, t.tool_name, t.tool_picture, t.t_status, t.tool_description FROM users u JOIN tools t ON u.user_id = t.tools_user_id WHERE tool_name LIKE ?;"
-    cursor.execute(sql_query, params)
+    sql_query = "SELECT u.user_id, u.account_createddate, u.account_login, u.account_password, u.accouint_lat, u.accouint_lon, u.user_fname, u.user_lname, u.user_birthdate, u.user_tools, u.user_orders, t.tool_id, t.tool_name, t.tool_picture, t.t_status, t.tool_description FROM users u JOIN tools t ON u.user_id = t.tools_user_id WHERE tool_name LIKE '%" + tool_name  + "%'"
+    # params = ('%' + tool_name + '%')
+    cursor.execute(sql_query)
     rows = cursor.fetchall()
     df = pd.read_sql(sql_query, conn)
     return df

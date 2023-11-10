@@ -1,6 +1,8 @@
 # import json
+import re
 from datetime import datetime
 
+import flask_login
 import jinja2
 from flask_login import login_required
 from folium import ClickForMarker
@@ -8,7 +10,8 @@ from folium import ClickForMarker
 # from __init__ import db
 from flask import Blueprint, render_template, request, flash, jsonify, session, send_file, url_for
 import folium
-from dbConn import connection, getTools
+from dbConn import connection, getTools, findTools
+
 # from models import employees
 # from apscheduler.schedulers.background import BackgroundScheduler
 # scheduler = BackgroundScheduler()
@@ -22,6 +25,8 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
+    numbers = re.findall(r'\d+', str(flask_login.current_user))
+    print(int(numbers[0]))
     current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     map_obj = map_create()
     map_html = map_obj._repr_html_()
@@ -73,7 +78,18 @@ def map_create():
 
 
 def get_markers():
-    df = getTools()
+    params = request.args.get('srch-term')
+
+    # Convert None to an empty string
+    params = str(params) if params is not None else ""
+
+    print(params)
+
+    # Get the DataFrame based on the filter criteria
+    if params:
+        df = findTools(params)
+    else:
+        df = getTools()
     print(df)
     markers = []
     html_popup_template = """
@@ -140,14 +156,14 @@ def get_markers():
 
                 <!--Seller info (displayed on show more-->
                 <div id="sellerInfo">
-                    <h3 style="margin:0;">Owner Name</h3>
+                    <h3 style="margin:0;">{{row["user_fname"]}} {{row["user_lname"]}}</h3>
                     <br><br>
                     <p>Owner Info</p>
                 </div>
 
                 <!--Order controls, displayed on show more-->
                 <div id = "orderForm">
-                    <form class ="form-group">
+                    <form class ="form-group" method='post'>
                         <!--Rent from control, value needs to be updated and limited-->
                         <label for = "startTime">Rent From: </label>
                         <input type = "datetime-local" class ='form-control' name = "startTime" id="startTime" value="2023-10-31T12:00"><br>
@@ -258,6 +274,9 @@ def get_markers():
     });
 
         </script>
+        
+    
+        
     </html>"""
     for i, row in df.iterrows():
         # popup_text = f'Employee: {row["Employee First Name"]} {row["Employee Last Name"]}<br>'
