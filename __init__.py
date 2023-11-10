@@ -1,5 +1,5 @@
 from urllib import parse
-from flask import Flask
+from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 # from flask_socketio import SocketIO
@@ -58,10 +58,12 @@ def create_app():
 
     from views import views
     from auth import auth
+    from signup import signupBlueprint
     # from reports import reports_bp
     # from tables import tables_bp
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(signupBlueprint, url_prefix='/')
     # app.register_blueprint(reports_bp, url_prefix='/')
     # app.register_blueprint(tables_bp, url_prefix='/')
 
