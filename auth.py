@@ -1,3 +1,4 @@
+#COMP 3450: Karan Nurlybekov
 from datetime import datetime
 
 import flask_login

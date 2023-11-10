@@ -1,4 +1,4 @@
-
+//COMP 3450: Ethan Warner (now included in HTML file)
         /***********Filter Code***********/
         const brandArray = ["Makita", "Dewalt", "Craftsman"]; //Hard coded in brands, need to be updated by controller or AJAX
         populateBrands(brandArray);

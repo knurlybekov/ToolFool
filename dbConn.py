@@ -1,3 +1,4 @@
+#COMP 3450: Karan Nurlybekov Ethan Warner
 from datetime import datetime
 
 import pyodbc

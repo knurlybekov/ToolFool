@@ -1,3 +1,4 @@
+#COMP 3450: Karan Nurlybekov Ethan Warner
 from urllib import parse
 from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
