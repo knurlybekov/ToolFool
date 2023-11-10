@@ -41,6 +41,19 @@
 
         /***********Info Code***********/
         let CAD = new Intl.NumberFormat('en-US', {style:'currency', currency:'USD'}); //USD number format
+        //Attempt to limit time selectors, no idea why it doesn't work:
+        // let date = new Date();
+        // let day = date.getDay();
+        // let month = date.getMonth();
+        // let year = date.getFullYear();
+        //
+        //
+        // let currtime = year +"-"+ (month+1) +"-"+ day + "T00:00";
+        // $("#startTime").attr("min", currtime);
+        // $("#startTime").attr("value", "2023-11-31T12:00");
+        //
+        // $("#endTime").attr("min", currtime);
+        // $("#startTime").attr("value", currtime);
 
         /****************Event Listeners****************/
         //Event listener to expand/collapse info

@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlserver://acresproject.database.windows.net:1433;database=toolfooldb;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="toolfooldb@acresproject.database.windows.net" uuid="af20f4e3-21dc-43db-89cc-ee552ae529ee">
+      <driver-ref>azure.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://acresproject.database.windows.net:1433;database=toolfooldb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
