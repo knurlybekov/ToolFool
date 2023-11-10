@@ -4,7 +4,7 @@
 {% block title %}Home{% endblock %}
 {% block scr %}
 {% endblock %}
-{% block content %}
+{% block map_content %}
     <style>
         {##infoDiv{#}
         {#    width:200px;#}
@@ -55,6 +55,7 @@
     {% block map_content %}
     {{ map_html|safe }}
 {% endblock %}
+{{ map_html|safe }}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables"></script>
