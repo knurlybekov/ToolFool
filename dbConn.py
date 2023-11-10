@@ -86,7 +86,7 @@ def connection():
 
 def getUser(e_login):
     conn = connection()
-    sql_query = "SELECT account_login, account_password, account_id FROM accounts WHERE account_login = ?"
+    sql_query = "SELECT account_login, account_password, user_id FROM users WHERE account_login = ?"
     params = (e_login)
     # execute the query with the parameter values
     cursor = conn.cursor()
@@ -116,7 +116,8 @@ def getToolsOnSides(side):
 def getTools():
     conn = connection()
     cursor = conn.cursor()
-    sql_query = "select accouint_lat, accouint_lon, account_id from accounts"
+    # sql_query = "select accouint_lat, accouint_lon, account_id from accounts"
+    sql_query = "SELECT u.user_id, u.account_createddate, u.account_login, u.account_password, u.accouint_lat, u.accouint_lon, u.user_fname, u.user_lname, u.user_birthdate, u.user_tools, u.user_orders, t.tool_id, t.tool_name, t.tool_picture, t.t_status, t.tool_description FROM users u JOIN tools t ON u.user_id = t.tools_user_id;"
     cursor.execute(sql_query)
     rows = cursor.fetchall()
     df = pd.read_sql(sql_query, conn)

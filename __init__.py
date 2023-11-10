@@ -38,23 +38,28 @@ def create_app():
 
     from flask_login import UserMixin
 
-    class employee(UserMixin, db.Model):
-        __tablename__ = 'accounts'
+    class user(UserMixin, db.Model):
+        __tablename__ = 'users'
 
-        account_id = db.Column(db.Integer, primary_key=True)
         account_createddate = db.Column(db.DateTime, nullable=False)
         account_login = db.Column(db.String(50), nullable=False)
         account_password = db.Column(db.String(60), nullable=False)
-        account_user_id = db.Column(db.Integer, nullable=False)
         accouint_lat = db.Column(db.Float, nullable=False)
         accouint_lon = db.Column(db.Float, nullable=False)
+        user_fname = db.Column(db.String(50), nullable=False)
+        user_lname = db.Column(db.String(50), nullable=False)
+        user_birthdate = db.Column(db.String(50), nullable=True)
+        user_tools = db.Column(db.Float, nullable=True)
+        user_orders = db.Column(db.Float, nullable=True)
+        user_id = db.Column(db.Integer, primary_key=True, nullable=False)
+
 
 
     # from models import employees
 
     @login_manager.user_loader
     def load_user(id):
-        return employee.query.get(int(id))
+        return user.query.get(int(id))
 
     from views import views
     from auth import auth
