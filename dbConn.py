@@ -97,8 +97,10 @@ def getUser(e_login):
         # assign the values to separate variables
         e_login_result, e_password_result, e_id_result = result
         print(e_login_result, e_password_result,  e_id_result)
+        cursor.close()
         return e_login_result, e_password_result, e_id_result
     else:
+        cursor.close()
         return None, None, None
 
 
@@ -110,6 +112,7 @@ def getToolsOnSides(side):
     cursor.execute(sql_query, params)
     rows = cursor.fetchall()
     df = pd.DataFrame(rows, columns=['Latitude', 'Longitude', 'On side'])
+    cursor.close()
     return df
 
 
@@ -121,6 +124,7 @@ def getTools():
     cursor.execute(sql_query)
     rows = cursor.fetchall()
     df = pd.read_sql(sql_query, conn)
+    cursor.close()
     return df
 
 
@@ -134,6 +138,7 @@ def findTools(tool_name):
     cursor.execute(sql_query)
     rows = cursor.fetchall()
     df = pd.read_sql(sql_query, conn)
+    cursor.close()
     return df
 
 # def getWorksOnSides(side):
@@ -201,6 +206,7 @@ def addUser(fname, lname, login, pword, lat, long):
         sqlQuery = "insert into users values(" + "1900-01-01" + ",'" + login  + "', '" + pword + "', '" + lat + "', '" + long + "', '" + fname + "', '" + lname + "', null, null, null, null)"
         cursor.execute(sqlQuery)
         conn.commit()
+        cursor.close()
         return True
     else:
         return False
@@ -214,8 +220,10 @@ def checkUser(login):
     cursor.execute(sqlQuery)
 
     if(cursor.fetchone()):
+        cursor.close()
         return False
     else:
+        cursor.close()
         return True
 
 
@@ -225,12 +233,41 @@ def sendOrder(startTime, endTime, t_id, u_id):
     sqlQuery = "INSERT INTO orders VALUES ('" + startTime + "', '" + endTime + "', '" + t_id + "', '" + u_id + "', null)"
     cursor.execute(sqlQuery)
     conn.commit()
+    cursor.close()
 
 def addTool(name, desc, ui, price):
     conn = connection()
+    ui = str(ui)
     cursor = conn.cursor()
-    sqlQuery = "insert into tools values(" + "null" + ",'" + name + "', '" + "null" + "', '" + "available" + "', '" + desc + "', '" + ui + "', '" + price + "')"
+    sqlQuery = "insert into tools values(null,'" + name + "', null, '" + "available" + "', '" + desc + "', '" + ui + "', '" + price + "')"
     cursor.execute(sqlQuery)
     conn.commit()
+    cursor.close()
     return True
 
+def getOrders(u_id):
+    # u_id = str(u_id)
+    conn = connection()
+    cursor = conn.cursor()
+    sql_query = "SELECT o.order_user_id, o.order_id, o.order_starttime, o.order_endtime, t.tool_name, t.tool_description FROM orders as o JOIN tools as t ON t.tools_user_id = o.order_user_id WHERE o.order_user_id = ?"
+    params = u_id
+    cursor.execute(sql_query, params)
+    # cursor.execute(sql_query)
+    # rows = cursor.fetchall()
+    df = pd.read_sql_query(sql_query, conn, params=params)
+    cursor.close()
+    print(df)
+    return df
+
+def getToolsA(u_id):
+    # u_id = str(u_id)
+    conn = connection()
+    cursor = conn.cursor()
+    sql_query = "SELECT * from tools where tools_user_id = ?"
+    params = u_id
+    cursor.execute(sql_query,params)
+    # rows = cursor.fetchall()
+    df = pd.read_sql_query(sql_query, conn, params=params)
+    cursor.close()
+    print(df)
+    return df
